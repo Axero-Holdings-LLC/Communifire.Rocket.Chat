@@ -4,7 +4,7 @@ settings.addGroup('Accounts', function() {
 	this.section('Two Factor Authentication', function() {
 		const enable2FA = {
 			_id: 'Accounts_TwoFactorAuthentication_Enabled',
-			value: false,
+			value: true,
 		};
 
 		this.add('Accounts_TwoFactorAuthentication_Enabled', false, {
@@ -61,7 +61,7 @@ settings.addGroup('Accounts', function() {
 		this.add('Accounts_TwoFactorAuthentication_Enforce_Password_Fallback', true, {
 			type: 'boolean',
 			enableQuery: enable2FA,
-			public: true,
+			public: false,
 		});
 	});
 });

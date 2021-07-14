@@ -88,11 +88,13 @@ addAction('cf_video', ({ room }) => {
 	const t = useTranslation();
 
 	const enabledChannel = useSetting('Jitsi_Enable_Channels');
+	const enabledTeams = useSetting('Jitsi_Enable_Teams');
 
 	const groups = useStableArray([
 		'direct',
 		'group',
 		'live',
+		enabledTeams && 'team',
 		enabledChannel && 'channel',
 	].filter(Boolean) as ToolboxActionConfig['groups']);
 

@@ -10,6 +10,7 @@ import { SystemLogger } from '../../../logger/server';
 // import { Notifications } from '../../../notifications/server';
 
 Meteor.methods({
+	// eslint-disable-next-line no-unused-vars
 	'jitsi:updateTimeout': (rid, joiningNow = true) => {
 		if (!Meteor.userId()) {
 			throw new Meteor.Error('error-invalid-user', 'Invalid user', { method: 'jitsi:updateTimeout' });

@@ -33,9 +33,16 @@ export class JitsiBridge extends Emitter {
 		this.heartbeat = heartbeat;
 		this.rid = rid;
 		this.window = undefined;
+		this.needsStart = false;
 	}
 
 	start(domTarget) {
+		if (!this.needsStart) {
+			return;
+		}
+
+		this.needsStart = false;
+
 		const heartbeatTimer = setInterval(() => this.emit('HEARTBEAT', true), this.heartbeat);
 		this.once('dispose', () => clearTimeout(heartbeatTimer));
 

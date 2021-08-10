@@ -19,7 +19,7 @@ import { useReactiveValue } from '../../hooks/useReactiveValue';
 
 const ADMIN_PERMISSIONS = [
 	'view-logs',
-	'manage-emoji',
+	// 'manage-emoji',
 	'manage-sounds',
 	'view-statistics',
 	'manage-oauth-apps',

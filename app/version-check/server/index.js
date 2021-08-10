@@ -1,3 +1,5 @@
+/* JLM: Disable checkForUpdate
+
 import _ from 'underscore';
 import { Meteor } from 'meteor/meteor';
 import { SyncedCron } from 'meteor/littledata:synced-cron';
@@ -46,3 +48,5 @@ settings.get(/Register_Server|Update_EnableChecker/, _.debounce(() => {
 
 	SyncedCron.remove(jobName);
 }, 1000));
+
+*/

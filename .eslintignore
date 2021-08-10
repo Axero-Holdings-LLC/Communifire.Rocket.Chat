@@ -15,7 +15,7 @@ public/livechat/
 public/jitsi/external_api.js
 public/pdf.worker.min.js
 public/workers/**/*
-imports/client/
+imports/client/**/*
 !/.storybook/
 ee/server/services/dist/**
 !/.mocharc.js

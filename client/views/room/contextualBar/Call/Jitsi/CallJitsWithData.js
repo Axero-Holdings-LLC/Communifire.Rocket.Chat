@@ -1,6 +1,7 @@
 import { Skeleton } from '@rocket.chat/fuselage';
 import { useMutableCallback, useSafely } from '@rocket.chat/fuselage-hooks';
 import { Session } from 'meteor/session';
+import { clear } from '@rocket.chat/memo';
 import React, { useRef, useEffect, useState, useMemo, useLayoutEffect, memo } from 'react';
 
 import { CustomSounds } from '../../../../../../app/custom-sounds/client';
@@ -9,6 +10,8 @@ import { useConnectionStatus } from '../../../../../contexts/ConnectionStatusCon
 import { useSetModal } from '../../../../../contexts/ModalContext';
 import { useMethod } from '../../../../../contexts/ServerContext';
 import { useSettings } from '../../../../../contexts/SettingsContext';
+import { useToastMessageDispatch } from '../../../../../contexts/ToastMessagesContext';
+import { useTranslation } from '../../../../../contexts/TranslationContext';
 import { useUser } from '../../../../../contexts/UserContext';
 import { useRoom } from '../../../contexts/RoomContext';
 import { useTabBarClose } from '../../../providers/ToolboxProvider';
@@ -43,6 +46,8 @@ const CallJitsWithData = ({ rid }) => {
 	const closeModal = useMutableCallback(() => setModal(null));
 	const generateAccessToken = useMethod('jitsi:generateAccessToken');
 	const updateTimeout = useMethod('jitsi:updateTimeout');
+	const dispatchToastMessage = useToastMessageDispatch();
+	const t = useTranslation();
 
 	const handleCancel = useMutableCallback(() => {
 		closeModal();
@@ -131,12 +136,19 @@ const CallJitsWithData = ({ rid }) => {
 		user.username,
 	]);
 
-	const testAndHandleTimeout = useMutableCallback(() => {
+	const testAndHandleTimeout = useMutableCallback(async () => {
 		if (jitsi.openNewWindow) {
 			if (jitsi.window?.closed) {
 				return jitsi.dispose();
 			}
-			return updateTimeout(rid, false);
+			try {
+				await updateTimeout(rid, false);
+			} catch (error) {
+				dispatchToastMessage({ type: 'error', message: t(error.reason) });
+				clear();
+				handleClose();
+				return jitsi.dispose();
+			}
 		}
 		if (new Date() - new Date(room.jitsiTimeout) > TIMEOUT) {
 			handleClose();
@@ -144,7 +156,14 @@ const CallJitsWithData = ({ rid }) => {
 		}
 
 		if (new Date() - new Date(room.jitsiTimeout) + TIMEOUT > DEBOUNCE) {
-			return updateTimeout(rid, false);
+			try {
+				await updateTimeout(rid, false);
+			} catch (error) {
+				dispatchToastMessage({ type: 'error', message: t(error.reason) });
+				clear();
+				handleClose();
+				return jitsi.dispose();
+			}
 		}
 	});
 
@@ -164,23 +183,51 @@ const CallJitsWithData = ({ rid }) => {
 		if (!accepted || !jitsi) {
 			return;
 		}
+		let shouldDispose = false;
 
-		if (jitsi.needsStart) {
-			jitsi.start(ref.current);
-			updateTimeout(rid, true);
-		} else {
-			updateTimeout(rid, false);
+		async function fetchData() {
+			if (!accepted || !jitsi) {
+				return;
+			}
+
+			const clear = () => {
+				jitsi.off('HEARTBEAT', testAndHandleTimeout);
+				jitsi.dispose();
+			};
+
+			try {
+				if (jitsi.needsStart) {
+					jitsi.start(ref.current);
+					await updateTimeout(rid, true);
+				} else {
+					await updateTimeout(rid, false);
+				}
+			} catch (error) {
+				dispatchToastMessage({ type: 'error', message: t(error.reason) });
+				clear();
+				handleClose();
+			}
+
+			jitsi.on('HEARTBEAT', testAndHandleTimeout);
+
+			shouldDispose = !jitsi.openNewWindow;
 		}
 
-		jitsi.on('HEARTBEAT', testAndHandleTimeout);
-		const none = () => {};
-		const clear = () => {
-			jitsi.off('HEARTBEAT', testAndHandleTimeout);
-			jitsi.dispose();
-		};
-
-		return jitsi.openNewWindow ? none : clear;
-	}, [accepted, jitsi, rid, testAndHandleTimeout, updateTimeout]);
+		fetchData().then(() => {
+			if (shouldDispose) {
+				jitsi.dispose();
+			}
+		});
+	}, [
+		accepted,
+		jitsi,
+		rid,
+		testAndHandleTimeout,
+		updateTimeout,
+		dispatchToastMessage,
+		handleClose,
+		t,
+	]);
 
 	const handleYes = useMutableCallback(() => {
 		if (jitsi) {

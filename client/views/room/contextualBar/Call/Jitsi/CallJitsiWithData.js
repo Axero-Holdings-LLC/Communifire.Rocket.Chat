@@ -1,7 +1,7 @@
 import { Skeleton } from '@rocket.chat/fuselage';
 import { useMutableCallback, useSafely } from '@rocket.chat/fuselage-hooks';
-import { Session } from 'meteor/session';
 import { clear } from '@rocket.chat/memo';
+import { Session } from 'meteor/session';
 import React, { useRef, useEffect, useState, useMemo, useLayoutEffect, memo } from 'react';
 
 import { CustomSounds } from '../../../../../../app/custom-sounds/client';

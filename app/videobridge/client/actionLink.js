@@ -20,7 +20,7 @@ actionLinks.register('joinJitsiCall', function(message, params, instance) {
 		const jitsiTimeout = new Date((room && room.jitsiTimeout) || currentTime).getTime();
 
 		if (room && room?.muted?.includes(username)) {
-					dispatchToastMessage({ type: 'error', message: TAPi18n.__('You_have_been_muted', '') });
+			dispatchToastMessage({ type: 'error', message: TAPi18n.__('You_have_been_muted', '') });
 		} else if (jitsiTimeout > currentTime) {
 			Session.set('JitsiAnswering', rid);
 			// instance.tabBar.open('video');
@@ -44,6 +44,7 @@ actionLinks.register('joinJitsiCall_old', function(message, params, instance) {
 		const rid = Session.get('openedRoom');
 
 		const room = Rooms.findOne({ _id: rid });
+		const username = Meteor.user()?.username;
 		const currentTime = new Date().getTime();
 		const jitsiTimeout = new Date((room && room.jitsiTimeout) || currentTime).getTime();
 

@@ -78,7 +78,7 @@ FlowRouter.route('/communityLogout', {
 			callbacks.run('afterLogoutCleanUp', user);
 			Meteor.call('logoutCleanUp', user);
 			if (settings.get('Community_Url')) {
-				window.location = (`${settings.get('Community_Url')}/logout` as unknown) as Location;
+				window.location = `${settings.get('Community_Url')}/logout` as unknown as Location;
 			}
 		});
 	},

@@ -8,8 +8,7 @@ import { useSetModal } from '../../../client/contexts/ModalContext';
 import { useSetting } from '../../../client/contexts/SettingsContext';
 import { addAction, ToolboxActionConfig } from '../../../client/views/room/lib/Toolbox';
 import { useTranslation } from '../../../client/contexts/TranslationContext';
-import { useUserRoom } from '../../../client/contexts/UserContext';
-import { useUser } from '../../../client/contexts/UserContext';
+import { useUserRoom, useUser } from '../../../client/contexts/UserContext';
 import Header from '../../../client/components/Header';
 
 const templateBBB = lazy(() => import('../../../client/views/room/contextualBar/Call/BBB'));

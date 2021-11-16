@@ -92,14 +92,14 @@ const Jitsi: FC = () => {
 
 	const jitsiSubject =
 		room &&
-		(room.t === 'd' ? ((room as unknown) as IDirectMessageRoom).usernames.join(' x ') : room.name);
+		(room.t === 'd' ? (room as unknown as IDirectMessageRoom).usernames.join(' x ') : room.name);
 
 	const rname =
 		useHashName || !room
 			? uniqueID + rid
 			: encodeURIComponent(
 					room.t === 'd'
-						? ((room as unknown) as IDirectMessageRoom).usernames.join(' x ')
+						? (room as unknown as IDirectMessageRoom).usernames.join(' x ')
 						: room.name ?? '',
 			  );
 
@@ -211,7 +211,7 @@ const Jitsi: FC = () => {
 					rid,
 					user._id,
 					user.username,
-					((user as unknown) as any).avatarUrl,
+					(user as unknown as any).avatarUrl,
 				);
 				// CustomSounds.play('ring', { volume: 0.5, loop: true });
 				Session.set('JitsiRinging', rid);
@@ -266,7 +266,7 @@ const Jitsi: FC = () => {
 
 	return (
 		<>
-			<div ref={(ref as unknown) as any} />
+			<div ref={ref as unknown as any} />
 			{!accepted && <Skeleton />}
 		</>
 	);

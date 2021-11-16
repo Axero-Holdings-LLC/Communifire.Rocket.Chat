@@ -5,7 +5,7 @@ import React from 'react';
 
 import { callbacks } from '../../../app/callbacks/client';
 import { settings } from '../../../app/settings/client';
-import { popover, AccountBox, modal, SideNav } from '../../../app/ui-utils/client';
+import { popover, AccountBox, SideNav } from '../../../app/ui-utils/client';
 import { userStatus } from '../../../app/user-status/client';
 import MarkdownText from '../../components/MarkdownText';
 import { UserStatus } from '../../components/UserStatus';

@@ -131,26 +131,24 @@ const RoomMembers = ({
 					)}
 				</Box>
 			</VerticalBar.Content>
-			{
-				!isDirect && /* (onClickInvite ||*/ onClickAdd /* )*/ && (
-					<VerticalBar.Footer>
-						<ButtonGroup stretch>
-							{/* onClickInvite && (
+			{!isDirect && /* (onClickInvite ||*/ onClickAdd /* )*/ && (
+				<VerticalBar.Footer>
+					<ButtonGroup stretch>
+						{/* onClickInvite && (
 							<Button onClick={onClickInvite} width='50%'>
 								<Icon name='link' size='x20' mie='x4' />
 								{t('Invite_Link')}
 							</Button>
 						)*/}
-							{onClickAdd && (
-								<Button onClick={onClickAdd} width='50%' primary>
-									<Icon name='user-plus' size='x20' mie='x4' />
-									{t('Add')}
-								</Button>
-							)}
-						</ButtonGroup>
-					</VerticalBar.Footer>
-				)
-			}
+						{onClickAdd && (
+							<Button onClick={onClickAdd} width='50%' primary>
+								<Icon name='user-plus' size='x20' mie='x4' />
+								{t('Add')}
+							</Button>
+						)}
+					</ButtonGroup>
+				</VerticalBar.Footer>
+			)}
 		</>
 	);
 };

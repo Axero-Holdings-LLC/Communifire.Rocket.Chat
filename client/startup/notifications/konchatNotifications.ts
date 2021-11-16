@@ -7,13 +7,12 @@ import toastr from 'toastr';
 import { CustomSounds } from '../../../app/custom-sounds/client/lib/CustomSounds';
 import { CachedChatSubscription } from '../../../app/models/client';
 import { Notifications } from '../../../app/notifications/client';
-import { fireGlobalEvent, readMessage, Layout, modal } from '../../../app/ui-utils/client';
+import { readMessage, modal } from '../../../app/ui-utils/client';
 import { KonchatNotification } from '../../../app/ui/client';
 import { getUserPreference, t } from '../../../app/utils/client';
 import { IMessage } from '../../../definition/IMessage';
 import { IRoom } from '../../../definition/IRoom';
 import { ISubscription } from '../../../definition/ISubscription';
-import { goToRoomVideoById } from '../../lib/goToRoomById';
 import { fireGlobalEvent } from '../../lib/utils/fireGlobalEvent';
 import { isLayoutEmbedded } from '../../lib/utils/isLayoutEmbedded';
 
@@ -116,8 +115,6 @@ Meteor.startup(() => {
 							}
 							accepted = true;
 							console.log('<<<< ACCEPTED');
-
-							goToRoomVideoById(rid); // <<< DELETE THIS
 
 							{
 								const server = window.location.origin;

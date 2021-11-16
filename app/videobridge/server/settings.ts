@@ -1,6 +1,7 @@
 import { settingsRegistry } from '../../settings/server';
 
 settingsRegistry.addGroup('Video Conference', function() {
+	/*
 	this.section('BigBlueButton', function() {
 		this.add('bigbluebutton_Enabled', false, {
 			type: 'boolean',
@@ -79,16 +80,17 @@ settingsRegistry.addGroup('Video Conference', function() {
 			public: true,
 		});
 	});
+	*/
 
 	this.section('Jitsi', function() {
-		this.add('Jitsi_Enabled', false, {
+		this.add('Jitsi_Enabled', true, {
 			type: 'boolean',
 			i18nLabel: 'Enabled',
-			alert: 'This Feature is currently in beta! Please report bugs to github.com/RocketChat/Rocket.Chat/issues',
+			// alert: 'This Feature is currently in beta! Please report bugs to github.com/RocketChat/Rocket.Chat/issues',
 			public: true,
 		});
 
-		this.add('Jitsi_Domain', 'meet.jit.si', {
+		this.add('Jitsi_Domain', 'meet.communifire.com', {
 			type: 'string',
 			enableQuery: {
 				_id: 'Jitsi_Enabled',
@@ -149,7 +151,7 @@ settingsRegistry.addGroup('Video Conference', function() {
 			public: true,
 		});
 
-		this.add('Jitsi_Enable_Channels', false, {
+		this.add('Jitsi_Enable_Channels', true, {
 			type: 'boolean',
 			enableQuery: {
 				_id: 'Jitsi_Enabled',

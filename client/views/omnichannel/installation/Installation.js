@@ -13,7 +13,7 @@ const Installation = () => {
 
 	const siteUrl = useSetting('Site_Url')?.replace(/\/$/, '');
 
-	const installString = `<!-- Start of Rocket.Chat Livechat Script -->
+	const installString = `<!-- Start of Communifire Livechat Script -->
 	<script type="text/javascript">
 	(function(w, d, s, u) {
 		w.RocketChat = function(c) { w.RocketChat._.push(c) }; w.RocketChat._ = []; w.RocketChat.url = u;

@@ -6,8 +6,7 @@ import { callbacks } from '../../../callbacks/server';
 import { metrics } from '../../../metrics/server';
 import * as CONSTANTS from '../../constants';
 import { canSendMessage } from '../../../authorization/server';
-import { SystemLogger } from '../../../logger/server';
-// import { Notifications } from '../../../notifications/server';
+import { SystemLogger } from '../../../../server/lib/logger/system';
 
 Meteor.methods({
 	// eslint-disable-next-line no-unused-vars

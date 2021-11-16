@@ -14,7 +14,14 @@ import { useTranslation, useLoadLanguage } from '../../../contexts/TranslationCo
 import { useUser } from '../../../contexts/UserContext';
 import GroupPageSkeleton from './GroupPageSkeleton';
 
-function GroupPage({ children, headerButtons, _id, i18nLabel, i18nDescription }) {
+function GroupPage({
+	children = undefined,
+	headerButtons = undefined,
+	_id,
+	i18nLabel,
+	i18nDescription = undefined,
+	tabs = undefined,
+}) {
 	if (!CFUtilities.isDefaultLayout() && _id === 'OAuth') {
 		// Do not allow other OAuth apps to render on OAuth section (/admin/OAuth)
 		if (children) {
@@ -154,6 +161,8 @@ function GroupPage({ children, headerButtons, _id, i18nLabel, i18nDescription })
 					{headerButtons}
 				</ButtonGroup>
 			</Page.Header>
+
+			{tabs}
 
 			<Page.ScrollableContentWithShadow>
 				<Box marginBlock='none' marginInline='auto' width='full' maxWidth='x580'>

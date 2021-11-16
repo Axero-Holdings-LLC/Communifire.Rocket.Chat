@@ -21,7 +21,8 @@ import { triggerHandler } from '../../../app/integrations/server/lib/triggerHand
 import { ListenersModule, minimongoChangeMap } from '../../modules/listeners/listeners.module';
 import notifications from '../../../app/notifications/server/lib/Notifications';
 import { configureEmailInboxes } from '../../features/EmailInbox/EmailInbox';
-
+import { isPresenceMonitorEnabled } from '../../lib/isPresenceMonitorEnabled';
+import { use } from '../../../app/settings/server/Middleware';
 
 const autoUpdateRecords = new Map<string, AutoUpdateRecord>();
 
@@ -113,6 +114,12 @@ if (disableOplog) {
 	};
 }
 
+settings.set = use(settings.set, (context, next) => {
+	next(...context);
+	const [record] = context;
+	updateValue(record._id, record);
+});
+
 export class MeteorService extends ServiceClass implements IMeteor {
 	protected name = 'meteor';
 
@@ -125,28 +132,29 @@ export class MeteorService extends ServiceClass implements IMeteor {
 
 		this.onEvent('watch.settings', async ({ clientAction, setting }): Promise<void> => {
 			if (clientAction !== 'removed') {
-				settings.storeSettingValue(setting, false);
-				updateValue(setting._id, { value: setting.value });
+				settings.set(setting);
 				return;
 			}
 
-			settings.removeSettingValue(setting, false);
+			settings.set({ ...setting, value: undefined });
 			setValue(setting._id, undefined);
 		});
 
 		// TODO: May need to merge with https://github.com/RocketChat/Rocket.Chat/blob/0ddc2831baf8340cbbbc432f88fc2cb97be70e9b/ee/server/services/Presence/Presence.ts#L28
-		this.onEvent('watch.userSessions', async ({ clientAction, userSession }): Promise<void> => {
-			if (clientAction === 'removed') {
-				UserPresenceMonitor.processUserSession({
-					_id: userSession._id,
-					connections: [{
-						fake: true,
-					}],
-				}, 'removed');
-			}
+		if (isPresenceMonitorEnabled()) {
+			this.onEvent('watch.userSessions', async ({ clientAction, userSession }): Promise<void> => {
+				if (clientAction === 'removed') {
+					UserPresenceMonitor.processUserSession({
+						_id: userSession._id,
+						connections: [{
+							fake: true,
+						}],
+					}, 'removed');
+				}
 
-			UserPresenceMonitor.processUserSession(userSession, minimongoChangeMap[clientAction]);
-		});
+				UserPresenceMonitor.processUserSession(userSession, minimongoChangeMap[clientAction]);
+			});
+		}
 
 		this.onEvent('watch.instanceStatus', async ({ clientAction, id, data }): Promise<void> => {
 			if (clientAction === 'removed') {
@@ -274,6 +282,9 @@ export class MeteorService extends ServiceClass implements IMeteor {
 	}
 
 	getRoutingManagerConfig(): IRoutingManagerConfig {
-		return RoutingManager.getConfig();
+		// return false if called before routing method is set
+		// this will cause that oplog events received on early stages of server startup
+		// won't be fired (at least, inquiry events)
+		return RoutingManager.isMethodSet() && RoutingManager.getConfig();
 	}
 }

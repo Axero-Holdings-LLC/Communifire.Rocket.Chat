@@ -6,6 +6,8 @@ import '../imports/startup/server';
 
 import './services/startup';
 
+import '../app/communifire/server/startup';
+
 import '../ee/server';
 import './lib/pushConfig';
 import './startup/migrations';

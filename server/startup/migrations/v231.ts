@@ -1,16 +1,21 @@
+/*
 import { ISectionBlock, BlockType } from '@rocket.chat/apps-engine/definition/uikit/blocks/Blocks';
 import { TextObjectType } from '@rocket.chat/apps-engine/definition/uikit/blocks/Objects';
+*/
 
 import { addMigration } from '../../lib/migrations';
+/*
 import { BannerPlatform } from '../../../definition/IBanner';
 import { Banner } from '../../sdk';
 import { settings } from '../../../app/settings/server';
 import { Settings } from '../../../app/models/server';
 import { isEnterprise } from '../../../ee/app/license/server';
+*/
 
 addMigration({
 	version: 231,
 	up() {
+		/*
 		const LDAPEnabled = settings.get('LDAP_Enable');
 		const SAMLEnabled = settings.get('SAML_Custom_Default');
 
@@ -56,5 +61,6 @@ addMigration({
 		};
 
 		Promise.await(Banner.create(LDAPBanner));
+		*/
 	},
 });

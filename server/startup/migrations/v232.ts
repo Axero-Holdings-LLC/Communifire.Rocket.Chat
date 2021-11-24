@@ -1,14 +1,17 @@
 import { addMigration } from '../../lib/migrations';
+/*
 import { isEnterprise } from '../../../ee/app/license/server';
 import { Users, Settings } from '../../../app/models/server/raw';
 import { Banner } from '../../sdk';
 import { BannerPlatform } from '../../../definition/IBanner';
 import { IUser } from '../../../definition/IUser';
 import { settings } from '../../../app/settings/server';
+*/
 
 addMigration({
 	version: 232,
 	up() {
+		/*
 		const query = {
 			_id: { $in: [/^Accounts_OAuth_Custom-?([^-_]+)$/] },
 			value: true,
@@ -36,5 +39,6 @@ addMigration({
 		}
 
 		admins.map((a) => Banner.dismiss(a._id, authBanner._id));
+		*/
 	},
 });

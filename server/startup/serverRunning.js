@@ -7,8 +7,10 @@ import { TAPi18n } from 'meteor/rocketchat:tap-i18n';
 
 import { settings } from '../../app/settings/server';
 import { Info, getMongoInfo } from '../../app/utils/server';
+/*
 import { Users } from '../../app/models/server';
 import { sendMessagesToAdmins } from '../lib/sendMessagesToAdmins';
+*/
 import { showErrorBox, showWarningBox, showSuccessBox } from '../lib/logger/showBox';
 
 const exitIfNotBypassed = (ignore, errorCode = 1) => {
@@ -75,11 +77,15 @@ Meteor.startup(function() {
 			msg = [`YOUR CURRENT MONGODB VERSION (${ mongoVersion }) IS DEPRECATED.`, 'IT WILL NOT BE SUPPORTED ON ROCKET.CHAT VERSION 5.0.0 AND GREATER,', 'PLEASE UPGRADE MONGODB TO VERSION 4.2 OR GREATER'].join('\n');
 			showWarningBox('DEPRECATION', msg);
 
+			/*
 			const id = `mongodbDeprecation_${ mongoVersion.replace(/[^0-9]/g, '_') }`;
+			*/
 			const title = 'MongoDB_Deprecated';
 			const text = 'MongoDB_version_s_is_deprecated_please_upgrade_your_installation';
 			const link = 'https://go.rocket.chat/i/mongodb-deprecated';
 
+			console.log({ msg: `*${ TAPi18n.__(title, 'en') }*\n${ TAPi18n.__(text, mongoVersion, 'en') }\n${ link }` });
+			/*
 			if (!Users.bannerExistsById(id)) {
 				sendMessagesToAdmins({
 					msgs: ({ adminUser }) => [{ msg: `*${ TAPi18n.__(title, adminUser.language) }*\n${ TAPi18n.__(text, mongoVersion, adminUser.language) }\n${ link }` }],
@@ -94,6 +100,7 @@ Meteor.startup(function() {
 					}],
 				});
 			}
+			*/
 		}
 	}, 100);
 });
